@@ -1,0 +1,24 @@
+* Summary
+
+(Replace this text with a short description of what your completed project should be here.)
+
+
+
+* Progress
+
+Must
+[ ] (Replace this text with a feature and check the [x] when it is done)
+[ ]
+[ ]
+
+Should
+[ ]
+[ ]
+
+Could
+[ ]
+[ ]
+
+Won't
+[ ]
+[ ]

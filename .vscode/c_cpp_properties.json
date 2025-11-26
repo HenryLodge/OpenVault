@@ -1,0 +1,18 @@
+{
+    "version": 4,
+    "configurations": [
+        {
+            "name": "default",
+            "cppStandard": "c++20",
+            "includePath": [
+                "${workspaceFolder}/include",
+                "/mingw64/include/SDL2",
+                "/Library/Frameworks/SDL2.framework/Headers",
+                "/Library/Frameworks/SDL2_image.framework/Headers",
+                "/Library/Frameworks/SDL2_mixer.framework/Headers",
+                "/Library/Frameworks/SDL2_ttf.framework/Headers",
+                "/usr/include/SDL2"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,22 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "debug bin/main_dbg",
+            "preLaunchTask": "make exe_dbg",
+            "program": "${workspaceFolder}/bin/main_dbg",
+            "args": [],
+            "type": "cppdbg",
+            "request": "launch",
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "windows": { "externalConsole": false, "MIMode": "gdb" },
+            "osx": { "externalConsole": false, "MIMode": "lldb" },
+            "linux": { "externalConsole": false, "MIMode": "gdb" }
+        }
+    ]
+}
