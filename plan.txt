@@ -1,0 +1,37 @@
+OpenVault
+
+Encrypted command-line password and document management system.
+AES-256 encryption and PBKDF2 key derivation to securely store credentials and files in an encrypted "vault" accessible only with a master password.
+When putting a document in the vault, the document and metadata will be moved from its current path and put inside the encrypted vault.
+
+
+
+# Basic Usage
+openvault <vault_file> [command] [options]
+
+# Vault Management
+openvault create <vault_file>                    # Create new vault
+openvault info <vault_file>                      # Show vault statistics
+openvault change-password <vault_file>           # Change master password
+openvault backup <vault_file> <backup_file>      # Export encrypted backup
+openvault restore <backup_file> <vault_file>     # Restore from backup
+
+# Password Management
+openvault add-password <vault_file>              # Add new password entry
+openvault list-passwords <vault_file>            # List all passwords
+openvault search <vault_file> <query>            # Search passwords
+openvault get <vault_file> <id>                  # View password details
+openvault edit <vault_file> <id>                 # Edit password entry
+openvault delete <vault_file> <id>               # Delete password entry
+openvault generate [length]                      # Generate secure password
+
+# Document Management
+openvault add-document <vault_file> <file_path>  # Encrypt and store document
+openvault list-documents <vault_file>            # List stored documents
+openvault get-document <vault_file> <id>         # View document info
+openvault export-document <vault_file> <id> <output_path>  # Decrypt and export
+openvault delete-document <vault_file> <id>      # Delete document
+
+# Utilities
+openvault --version                              # Show version
+openvault --help                                 # Show help message
