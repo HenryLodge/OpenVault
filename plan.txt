@@ -35,4 +35,3 @@ openvault delete-document <vault_file> <id>      # Delete document
 # Utilities
 openvault --version                              # Show version
 openvault --help                                 # Show help message
-
