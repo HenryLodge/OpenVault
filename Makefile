@@ -9,7 +9,7 @@ CXXTEST_HOME?=extern/cxxtest-4.4
 ## use one of the following sets or add your own
 
 CXXFLAGS_BASE=
-LDFLAGS_BASE=
+LDFLAGS_BASE=-lssl -lcrypto  ## from claude
 
 ## for optimization
 CXXFLAGS_EXTRA_REL:=-O2 -DNDEBUG
