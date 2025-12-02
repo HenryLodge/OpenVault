@@ -35,3 +35,7 @@ openvault delete-document <vault_file> <id>      # Delete document
 # Utilities
 openvault --version                              # Show version
 openvault --help                                 # Show help message
+
+
+Makefile line 13, used AI to help with makefile setup to add openssl flags
+  - LDFLAGS_BASE=-lssl -lcrypto  ## from claude
