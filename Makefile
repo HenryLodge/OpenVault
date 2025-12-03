@@ -2,7 +2,8 @@
 DEFAULT_EXE=bin/main
 
 ## location of cxxtest
-CXXTEST_HOME?=extern/cxxtest-4.4
+##CXXTEST_HOME?=extern/cxxtest-4.4
+CXXTEST_HOME?=cxxtest/cxxtest-4.4
 
 
 ## various options for possible build configurations
@@ -216,19 +217,19 @@ bin/test_prf: $(TEST_OBJECT_FILES_PRF) $(OBJECT_FILES_PRF)
 
 build/test/%.o: build/test/%.cpp $(HEADER_FILES) Makefile
 	mkdir -p $(dir $@)
-	g++ -c $< $(CXXFLAGS_REL) -o $@
+	g++ -c $< $(CXXFLAGS_REL) -Wno-error -o $@
 
 build/test/%_dbg.o: build/test/%.cpp $(HEADER_FILES) Makefile
 	mkdir -p $(dir $@)
-	g++ -c $< $(CXXFLAGS_DBG) -o $@
+	g++ -c $< $(CXXFLAGS_DBG) -Wno-error -o $@
 
 build/test/%_cov.o: build/test/%.cpp $(HEADER_FILES) Makefile
 	mkdir -p $(dir $@)
-	g++ -c $< $(CXXFLAGS_COV) -o $@
+	g++ -c $< $(CXXFLAGS_COV) -Wno-error -o $@
 
 build/test/%_prf.o: build/test/%.cpp $(HEADER_FILES) Makefile
 	mkdir -p $(dir $@)
-	g++ -c $< $(CXXFLAGS_PRF) -o $@
+	g++ -c $< $(CXXFLAGS_PRF) -Wno-error -o $@
 
 .PRECIOUS: build/test/%.cxxtest.cpp
 build/test/%.cxxtest.cpp: test/%.cxxtest.hpp
