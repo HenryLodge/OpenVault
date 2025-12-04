@@ -25,7 +25,7 @@ class EntryException : public CustomException {
 };
 
 // exception for cryptography function errors
-class CryptoException : public CustomException {
+class CryptographyException : public CustomException {
   public:
     explicit CryptoException(const std::string &msg) : CustomException("Cryptography Error: " + msg) {}
 };
