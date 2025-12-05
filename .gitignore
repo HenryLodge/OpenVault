@@ -2,6 +2,7 @@
 /obj
 /build
 /cxxtest
+*.ovault
 
 # Prerequisites
 *.d
