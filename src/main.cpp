@@ -28,36 +28,36 @@ void handleListPasswords(const std::string& vaultFile) {
 
 // handle search command input
 void handleSearch(const std::string& vaultFile, const std::string& query) {
-    std::string master_password = CLI::readPassword("Master password: ");
+  std::string master_password = CLI::readPassword("Master password: ");
+  
+  Vault vault(vaultFile);
+  vault.open(master_password);
+  
+  auto entries = vault.getAllEntries();
+  std::vector<PasswordEntry> results;
+  
+  // filter
+  std::copy_if(entries.begin(), entries.end(), std::back_inserter(results), [&query](const PasswordEntry& entry) {
+    std::string low_query = query;
+    std::transform(low_query.begin(), low_query.end(), low_query.begin(), ::tolower);
     
-    Vault vault(vaultFile);
-    vault.open(master_password);
+    std::string service = entry.getService();
+    std::string username = entry.getUsername();
+    std::string category = entry.getCategory();
     
-    auto entries = vault.getAllEntries();
-    std::vector<PasswordEntry> results;
+    std::transform(service.begin(), service.end(), service.begin(), ::tolower);
+    std::transform(username.begin(), username.end(), username.begin(), ::tolower);
+    std::transform(category.begin(), category.end(), category.begin(), ::tolower);
     
-    // filter
-    std::copy_if(entries.begin(), entries.end(), std::back_inserter(results), [&query](const PasswordEntry& entry) {
-      std::string low_query = query;
-      std::transform(low_query.begin(), low_query.end(), low_query.begin(), ::tolower);
-      
-      std::string service = entry.getService();
-      std::string username = entry.getUsername();
-      std::string category = entry.getCategory();
-      
-      std::transform(service.begin(), service.end(), service.begin(), ::tolower);
-      std::transform(username.begin(), username.end(), username.begin(), ::tolower);
-      std::transform(category.begin(), category.end(), category.begin(), ::tolower);
-      
-      return (service.find(low_query) != (std::string::npos || username.find(low_query) != std::string::npos || category.find(low_query) != std::string::npos));
-    });
-    
-    if (results.empty()) {
-      CLI::printInfo("No entries found matching: " + query);
-    } else {
-      CLI::printSuccess("Found " + std::to_string(results.size()) + " matching entries:");
-      CLI::displayPasswordTable(results);
-    }
+    return (service.find(low_query) != (std::string::npos || username.find(low_query) != std::string::npos || category.find(low_query) != std::string::npos));
+  });
+  
+  if (results.empty()) {
+    CLI::printInfo("No entries found matching: " + query);
+  } else {
+    CLI::printSuccess("Found " + std::to_string(results.size()) + " matching entries:");
+    CLI::displayPasswordTable(results);
+  }
 }
 
 // handle create vault command input
