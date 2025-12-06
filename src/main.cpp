@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <map>
+#include <fstream> 
 #include "vault.hpp"
 #include "password_entry.hpp"
 #include "password_generator.hpp"
@@ -118,7 +119,7 @@ void handleAddPassword(const std::string& vaultFile) {
                                             useDigits, useSymbols);
       std::cout << "\nGenerated password: " << password << "\n\n";
     } else {
-        password = CLI::readPassword("Password: ");
+      password = CLI::readPassword("Password: ");
     }
   } else {
     password = password_choice;
@@ -265,6 +266,71 @@ void handleInfo(const std::string& vaultFile) {
   std::cout << "\n";
 }
 
+// handle change vault password command input
+void handleChangePassword(const std::string& vaultFile) {
+  std::string old_password = CLI::readPassword("Current master password: ");
+  
+  Vault vault(vaultFile);
+  vault.open(old_password);
+  
+  std::cout << "\n";
+  
+  // new pass
+  std::string new_password1 = CLI::readPassword("New master password: ");
+  std::string new_password2 = CLI::readPassword("Confirm new password: ");
+  
+  if (new_password1 != new_password2) {
+    CLI::printError("Passwords do not match");
+    return;
+  }
+  
+  if (new_password1.length() < 8) {
+    CLI::printError("Password must be at least 8 characters");
+    return;
+  }
+  
+  if (new_password1 == old_password) {
+    CLI::printError("New password must be different from old password");
+    return;
+  }
+  
+  auto entries = vault.getAllEntries();
+  vault.close();
+  
+  // make temp backup
+  std::string backupFile = vaultFile + ".backup";
+  std::ifstream src(vaultFile, std::ios::binary);
+  std::ofstream dst(backupFile, std::ios::binary);
+  dst << src.rdbuf();
+  src.close();
+  dst.close();
+  
+  CLI::printInfo("Created backup: " + backupFile);
+  
+  try {
+    std::remove(vaultFile.c_str());
+    Vault newVault(vaultFile);
+    newVault.create(new_password1);
+    
+    CLI::printInfo("Re-encrypting " + std::to_string(entries.size()) + " entries...");
+    
+    for (const auto& entry : entries) {
+      newVault.addEntry(entry);
+    }
+    
+    newVault.close();
+    std::remove(backupFile.c_str());
+    
+    CLI::printSuccess("Master password changed successfully");
+    CLI::printInfo("All entries re-encrypted with new password");
+  } catch (...) {
+    std::remove(vaultFile.c_str());
+    std::rename(backupFile.c_str(), vaultFile.c_str());
+    CLI::printError("Failed to change password. Vault restored from backup.");
+    throw;
+  }
+}
+
 int main(int argc, char* argv[]) {
   try {
     // flags
@@ -292,49 +358,42 @@ int main(int argc, char* argv[]) {
     // check command
     if (command == "create") {
       handleCreate(vault_file);
-    }
-    else if (command == "add-password") {
+    } else if (command == "add-password") {
       handleAddPassword(vault_file);
-    }
-    else if (command == "list-passwords" || command == "list") {
+    } else if (command == "list-passwords" || command == "list") {
       handleListPasswords(vault_file);
-    }
-    else if (command == "search") {
+    } else if (command == "search") {
       if (argc < 4) {
         CLI::printError("Usage: openvault <vault> search <query>");
         return 1;
       }
       handleSearch(vault_file, argv[3]);
-    }
-    else if (command == "get") {
+    } else if (command == "get") {
       if (argc < 4) {
         CLI::printError("Usage: openvault <vault> get <id>");
         return 1;
       }
       handleGet(vault_file, std::stoi(argv[3]));
-    }
-    else if (command == "edit") {
+    } else if (command == "edit") {
       if (argc < 4) {
         CLI::printError("Usage: openvault <vault> edit <id>");
         return 1;
       }
       handleEdit(vault_file, std::stoi(argv[3]));
-    }
-    else if (command == "delete") {
+    } else if (command == "delete") {
       if (argc < 4) {
         CLI::printError("Usage: openvault <vault> delete <id>");
         return 1;
       }
       handleDelete(vault_file, std::stoi(argv[3]));
-    }
-    else if (command == "generate") {
+    } else if (command == "generate") {
       int length = (argc >= 4) ? std::stoi(argv[3]) : 16;
       handleGenerate(length);
-    }
-    else if (command == "info") {
+    } else if (command == "info") {
       handleInfo(vault_file);
-    }
-    else {
+    } else if (command == "change-password") {
+      handleChangePassword(vault_file);
+    } else {
       CLI::printError("Unknown command: " + command);
       CLI::printInfo("Use 'openvault --help' for usage information");
       return 1;
