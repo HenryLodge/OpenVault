@@ -331,6 +331,38 @@ void handleChangePassword(const std::string& vaultFile) {
   }
 }
 
+// handle vault export command input
+void handleExport(const std::string& vaultFile, const std::string& outputFile) {
+  std::string master_password = CLI::readPassword("Master password: ");
+  
+  Vault vault(vaultFile);
+  vault.open(master_password);
+  
+  auto entries = vault.getAllEntries();
+  
+  std::ofstream out(outputFile);
+  if (!out) {
+    CLI::printError("Cannot create output file: " + outputFile);
+    return;
+  }
+  
+  // export csv
+  out << "Service,Username,Password,URL,Category,Notes\n";
+  for (const auto& entry : entries) {
+    out << "\"" << entry.getService() << "\","
+        << "\"" << entry.getUsername() << "\","
+        << "\"" << entry.getPassword() << "\","
+        << "\"" << entry.getUrl() << "\","
+        << "\"" << entry.getCategory() << "\","
+        << "\"" << entry.getNotes() << "\"\n";
+  }
+  out.close();
+  
+  CLI::printSuccess("Exported " + std::to_string(entries.size()) + " entries to: " + outputFile);
+  std::cout << "WARNING: Exported file contains UNENCRYPTED passwords\n";
+  CLI::printInfo("Delete the file after use or encrypt it separately");
+}
+
 int main(int argc, char* argv[]) {
   try {
     // flags
@@ -393,6 +425,12 @@ int main(int argc, char* argv[]) {
       handleInfo(vault_file);
     } else if (command == "change-password") {
       handleChangePassword(vault_file);
+    } else if (command == "export") {
+      if (argc < 4) {
+        CLI::printError("Usage: openvault <vault> export <output.csv>");
+        return 1;
+      }
+      handleExport(vault_file, argv[3]);
     } else {
       CLI::printError("Unknown command: " + command);
       CLI::printInfo("Use 'openvault --help' for usage information");
