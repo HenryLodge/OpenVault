@@ -1,5 +1,6 @@
 #include "cli.hpp"
 #include "password_entry.hpp"
+#include "password_generator.hpp"
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -15,6 +16,7 @@ namespace CLI {
     std::cout << "Commands:\n";
     std::cout << "  create                Create new vault\n";
     std::cout << "  add-password          Add password entry\n";
+    std::cout << "  change-password       Change master password\n";
     std::cout << "  list-passwords        List all passwords\n";
     std::cout << "  get <id>              Show password details\n";
     std::cout << "  search <query>        Search passwords\n";
@@ -111,18 +113,21 @@ namespace CLI {
 
     // header info
     std::cout << "\n";
-    printSeparator('-', 80);
+    printSeparator('-', 100);
     std::cout << std::left << std::setw(5) << "ID" << std::setw(20) << "Service" << std::setw(25) << "Username"
-              << std::setw(15) << "Category" << std::setw(15) << "Modified" << "\n";
-    printSeparator('-', 80);
+              << std::setw(20) << "Category" << std::setw(20) << "Modified" << std::setw(30) << "Strength" << "\n";
+    printSeparator('-', 100);
 
     // entries
     for (const auto &entry : entries) {
+      int strength = PasswordGenerator::calculateStrength(entry.getPassword());
+      std::string strength_description = PasswordGenerator::getStrengthDescription(strength);
+
       std::cout << std::left << std::setw(5) << entry.getId() << std::setw(20) << entry.getService().substr(0, 19)
-                << std::setw(25) << entry.getUsername().substr(0, 24) << std::setw(15) << entry.getCategory().substr(0, 14)
-                << std::setw(15) << formatDate(entry.getModified()) << "\n";
+                << std::setw(25) << entry.getUsername().substr(0, 24) << std::setw(16) << entry.getCategory().substr(0, 14)
+                << std::setw(24) << formatDate(entry.getModified()) << std::setw(15) << strength_description << "\n";
     }
-    printSeparator('-', 80);
+    printSeparator('-', 100);
     std::cout << "Total: " << entries.size() << " entries\n\n";
   }
 
@@ -135,6 +140,10 @@ namespace CLI {
     std::cout << "Service:   " << entry.getService() << "\n";
     std::cout << "Username:  " << entry.getUsername() << "\n";
     std::cout << "Password:  " << entry.getPassword() << "\n";
+
+    int strength = PasswordGenerator::calculateStrength(entry.getPassword());
+    std::string strength_description = PasswordGenerator::getStrengthDescription(strength);
+    std::cout << "Strength:  " << strength << "/100 (" << strength_description << ")\n";
 
     if (!entry.getUrl().empty()) {
       std::cout << "URL:       " << entry.getUrl() << "\n";
