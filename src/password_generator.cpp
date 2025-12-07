@@ -61,17 +61,28 @@ int PasswordGenerator::calculateStrength(const std::string &password) {
   }
 
   // character score 10-40
-  bool hasLower = false, hasUpper = false, hasDigit = false, hasSymbol = false;
+  bool hasLower = false;
+  bool hasUpper = false;
+  bool hasDigit = false;
+  bool hasSymbol = false;
 
   for (char c : password) {
-    if (std::islower(c))
-      hasLower = true;
-    else if (std::isupper(c))
-      hasUpper = true;
-    else if (std::isdigit(c))
-      hasDigit = true;
-    else
-      hasSymbol = true;
+    if (!hasLower || !hasUpper || !hasDigit || !hasSymbol) {
+      if (std::islower(c)) {
+        hasLower = true;
+      }
+      else if (std::isupper(c)) {
+        hasUpper = true;
+      }
+      else if (std::isdigit(c)) {
+        hasDigit = true;
+      }
+      else {
+        hasSymbol = true;
+      }
+    } else {
+      break;
+    }
   }
 
   int varieties = hasLower + hasUpper + hasDigit + hasSymbol;
