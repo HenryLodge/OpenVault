@@ -64,8 +64,17 @@ void handleSearch(const std::string& vaultFile, const std::string& query) {
 // handle create vault command input
 void handleCreate(const std::string& vaultFile) {
   std::cout << "Creating new vault: " << vaultFile << "\n";
+  if (vaultFile.empty()) {
+    CLI::printError("Vault file name cannot be empty");
+    return;
+  }
   
   std::string password1 = CLI::readPassword("Enter master password: ");
+  if (password1.empty()) {
+    CLI::printError("Master password cannot be empty!");
+    return;
+  }
+
   std::string password2 = CLI::readPassword("Confirm master password: ");
   
   // check pass reqs
@@ -78,6 +87,16 @@ void handleCreate(const std::string& vaultFile) {
     return;
   }
   
+  int strength = PasswordGenerator::calculateStrength(password1);
+  if (strength < 40) {
+    std::cout << "Warning: Password strength is weak (" << strength << "/100)\n";
+    bool continueCreate = CLI::readYesNo("Continue anyway?");
+    if (!continueCreate) {
+      CLI::printInfo("Cancelled");
+      return;
+    }
+  }
+
   // create vault
   Vault vault(vaultFile);
   vault.create(password1);
