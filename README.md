@@ -144,17 +144,17 @@ OpenVault uses a custom binary format:
 ## Security Notes
 
 ### What OpenVault Does
-✅ Encrypts all passwords with AES-256-CBC  
-✅ Uses strong key derivation (PBKDF2, 100k iterations)  
-✅ Generates cryptographically secure passwords  
-✅ Wipes sensitive data from memory  
-✅ Never stores master password  
+- Encrypts all passwords with AES-256-CBC  
+- Uses strong key derivation (PBKDF2, 100k iterations)  
+- Generates cryptographically secure passwords  
+- Wipes sensitive data from memory  
+- Never stores master password  
 
 ### What OpenVault Doesn't Do
-⚠️ No cloud sync (local files only)  
-⚠️ No two-factor authentication  
-⚠️ No password breach checking  
-⚠️ No clipboard auto-clear  
+- No cloud sync (local files only)  
+- No two-factor authentication  
+- No password breach checking  
+- No clipboard auto-clear  
 
 ---
 
