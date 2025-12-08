@@ -2,7 +2,6 @@
 DEFAULT_EXE=bin/main
 
 ## location of cxxtest
-##CXXTEST_HOME?=extern/cxxtest-4.4
 CXXTEST_HOME?=cxxtest/cxxtest-4.4
 
 
