@@ -3,6 +3,7 @@
 /build
 /cxxtest
 *.ovault
+plan.txt
 
 # Prerequisites
 *.d
