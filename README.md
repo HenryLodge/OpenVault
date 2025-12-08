@@ -1,8 +1,8 @@
 # OpenVault
 
-**Command-line encrypted password manager with AES-256-CBC encryption**
+**Secure by design. Open by nature.**
 
-OpenVault is a secure, terminal-based password manager that stores credentials in an encrypted vault file. Built in C++20, it demonstrates modern C++ programming concepts including smart pointers, STL algorithms, exception handling, and operator overloading.
+OpenVault is an open-source, encrypted command-line password manager implementing AES-256-CBC encryption, PBKDF2 key derivation, and secure memory management that stores credentials in an encrypted vault file.
 
 ---
 
