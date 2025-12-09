@@ -10,7 +10,7 @@ PASSWORD="TestPassword123!"
 BIN="../bin/main_dbg"
 
 echo "======================================"
-echo "OpenVault Comprehensive Test Suite"
+echo "OpenVault Tests"
 echo "======================================"
 echo ""
 
@@ -22,7 +22,7 @@ echo $PASSWORD | $BIN $VAULT create << EOF
 $PASSWORD
 $PASSWORD
 EOF
-echo "✓ Vault created"
+echo "Vault created"
 echo ""
 
 echo "Test 2: Add password entries"
@@ -36,7 +36,7 @@ testpass123
 Development
 
 EOF
-echo "✓ Entry 1 added"
+echo "Entry 1 added"
 
 $BIN $VAULT add-password << EOF
 $PASSWORD
@@ -47,7 +47,7 @@ https://mail.google.com
 Personal
 My personal email
 EOF
-echo "✓ Entry 2 added"
+echo "Entry 2 added"
 
 $BIN $VAULT add-password << EOF
 $PASSWORD
@@ -58,28 +58,28 @@ https://aws.amazon.com
 Work
 Company AWS account
 EOF
-echo "✓ Entry 3 added"
+echo "Entry 3 added"
 echo ""
 
 echo "Test 3: List passwords"
 $BIN $VAULT list-passwords << EOF
 $PASSWORD
 EOF
-echo "✓ List displayed"
+echo "List displayed"
 echo ""
 
 echo "Test 4: Search passwords"
 $BIN $VAULT search github << EOF
 $PASSWORD
 EOF
-echo "✓ Search completed"
+echo "Search completed"
 echo ""
 
 echo "Test 5: Get password details"
 $BIN $VAULT get 1 << EOF
 $PASSWORD
 EOF
-echo "✓ Details displayed"
+echo "Details displayed"
 echo ""
 
 echo "Test 6: Edit password"
@@ -94,26 +94,26 @@ https://github.com
 
 
 EOF
-echo "✓ Entry edited"
+echo "Entry edited"
 echo ""
 
 echo "Test 7: Vault info"
 $BIN $VAULT info << EOF
 $PASSWORD
 EOF
-echo "✓ Info displayed"
+echo "Info displayed"
 echo ""
 
 echo "Test 8: Generate password"
 $BIN $VAULT generate 20
-echo "✓ Password generated"
+echo "Password generated"
 echo ""
 
 echo "Test 9: Export to CSV"
 $BIN $VAULT export test_export.csv << EOF
 $PASSWORD
 EOF
-echo "✓ Exported to CSV"
+echo "Exported to CSV"
 echo ""
 
 echo "Test 10: Change master password"
@@ -122,14 +122,14 @@ $PASSWORD
 NewPassword456!
 NewPassword456!
 EOF
-echo "✓ Password changed"
+echo "Password changed"
 echo ""
 
 echo "Test 11: Verify new password works"
 $BIN $VAULT list-passwords << EOF
 NewPassword456!
 EOF
-echo "✓ New password verified"
+echo "New password verified"
 echo ""
 
 echo "Test 12: Delete entry"
@@ -137,19 +137,19 @@ $BIN $VAULT delete 3 << EOF
 NewPassword456!
 DELETE
 EOF
-echo "✓ Entry deleted"
+echo "Entry deleted"
 echo ""
 
 echo "Test 13: Verify deletion"
 $BIN $VAULT list-passwords << EOF
 NewPassword456!
 EOF
-echo "✓ Deletion verified"
+echo "Deletion verified"
 echo ""
 
 # Cleanup
 rm -f $VAULT test_export.csv *.backup
 
 echo "======================================"
-echo "All tests passed! ✓"
+echo "All tests passed"
 echo "======================================"

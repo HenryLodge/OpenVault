@@ -20,9 +20,9 @@ $BIN $VAULT list-passwords << EOF
 WrongPassword
 EOF
 if [ $? -ne 0 ]; then
-    echo "✓ Correctly rejected wrong password"
+    echo "Correctly rejected wrong password"
 else
-    echo "✗ FAILED: Should reject wrong password"
+    echo "FAILED: Should reject wrong password"
 fi
 echo ""
 
@@ -33,9 +33,9 @@ $PASSWORD
 $PASSWORD
 EOF
 if [ $? -ne 0 ]; then
-    echo "✓ Correctly rejected duplicate vault"
+    echo "Correctly rejected duplicate vault"
 else
-    echo "✗ FAILED: Should reject duplicate vault"
+    echo "FAILED: Should reject duplicate vault"
 fi
 echo ""
 
@@ -45,9 +45,9 @@ $BIN $VAULT get 999 << EOF
 $PASSWORD
 EOF
 if [ $? -ne 0 ]; then
-    echo "✓ Correctly rejected non-existent entry"
+    echo "Correctly rejected non-existent entry"
 else
-    echo "✗ FAILED: Should reject non-existent entry"
+    echo "FAILED: Should reject non-existent entry"
 fi
 echo ""
 
@@ -58,9 +58,9 @@ $PASSWORD
 DELETE
 EOF
 if [ $? -ne 0 ]; then
-    echo "✓ Correctly rejected non-existent entry"
+    echo "Correctly rejected non-existent entry"
 else
-    echo "✗ FAILED: Should reject non-existent entry"
+    echo "FAILED: Should reject non-existent entry"
 fi
 echo ""
 
@@ -69,14 +69,14 @@ echo "Test 5: Operations on empty vault"
 $BIN $VAULT list-passwords << EOF
 $PASSWORD
 EOF
-echo "✓ Empty list handled"
+echo "Empty list handled"
 echo ""
 
 # Test 6: Search in empty vault
 $BIN $VAULT search test << EOF
 $PASSWORD
 EOF
-echo "✓ Search in empty vault handled"
+echo "Search in empty vault handled"
 echo ""
 
 # Cleanup
