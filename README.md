@@ -112,7 +112,7 @@ openvault my_passwords.ovault get 1
 | `generate` | `[length]` | Generate secure random password | `openvault my.ovault generate 24` |
 | `info` | None | Display vault statistics and categories | `openvault my.ovault info` |
 | `change-password` | None | Change master password and re-encrypt vault | `openvault my.ovault change-password` |
-| `export` | `<output.csv>` | Export passwords to CSV (⚠️ unencrypted) | `openvault my.ovault export backup.csv` |
+| `export` | `<output.csv>` | Export passwords to CSV (unencrypted) | `openvault my.ovault export backup.csv` |
 | `--help` | None | Show usage information | `openvault --help` |
 | `--version` | None | Show version information | `openvault --version` |
 
