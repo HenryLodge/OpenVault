@@ -21,8 +21,11 @@ echo "Checking dependencies..."
 
 NEEDS_SETUP=false
 
-if ! command -v openssl &> /dev/null; then
-    echo "⚠ OpenSSL not found"
+# Check for OpenSSL development libraries (needed for compilation)
+if pkg-config --exists openssl 2>/dev/null || [ -f "/usr/include/openssl/ssl.h" ]; then
+    echo "✓ OpenSSL development libraries found"
+else
+    echo "⚠ OpenSSL development libraries not found"
     NEEDS_SETUP=true
 fi
 

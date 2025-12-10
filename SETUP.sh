@@ -132,12 +132,23 @@ echo "=========================================="
 echo "Verifying installations..."
 echo "=========================================="
 
-# Verify OpenSSL
-if command -v openssl &> /dev/null; then
-    echo "✓ OpenSSL: $(openssl version)"
+# Verify OpenSSL development libraries
+if pkg-config --exists openssl 2>/dev/null; then
+    echo "✓ OpenSSL dev libraries: $(pkg-config --modversion openssl)"
+elif [ -f "/usr/include/openssl/ssl.h" ]; then
+    echo "✓ OpenSSL dev libraries: installed (header files found)"
+elif dpkg -l | grep -q libssl-dev 2>/dev/null; then
+    echo "✓ OpenSSL dev libraries: installed (libssl-dev package found)"
 else
-    echo "✗ OpenSSL not found"
+    echo "✗ OpenSSL dev libraries not found"
     exit 1
+fi
+
+# Also check for openssl command (optional)
+if command -v openssl &> /dev/null; then
+    echo "✓ openssl command: $(openssl version)"
+else
+    echo "⚠ openssl command not found (not required for building)"
 fi
 
 # Verify g++
